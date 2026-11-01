@@ -1,0 +1,28 @@
+name: Cypress E2E
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Executar testes Cypress
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          spec: cypress/e2e/automation-exercise.cy.js
+
+      - name: Publicar relatório Mochawesome
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-cypress
+          path: cypress/reports
+          retention-days: 30
